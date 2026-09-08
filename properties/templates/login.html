@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Login | Heritage Property{% endblock %}
+{% block content %}
+<div class="container"><div class="card card-soft form-card p-4 p-md-5">
+<div class="text-center mb-4"><div class="fs-1">🔐</div><h2 class="fw-bold">Welcome back</h2><p class="text-muted">Log in to access your personal dashboard and property requests.</p></div>
+{% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
+<form method="post">{% csrf_token %}
+<label class="form-label">Username</label><input class="form-control mb-3" name="username" required>
+<label class="form-label">Password</label><input class="form-control mb-4" type="password" name="password" required>
+<button class="btn btn-dark w-100 py-2">Login</button></form>
+<p class="text-center mt-4 mb-0">New here? <a href="{% url 'register' %}">Create an account</a></p>
+</div></div>
+{% endblock %}

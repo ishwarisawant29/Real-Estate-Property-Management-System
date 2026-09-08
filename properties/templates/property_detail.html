@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}{{ property.title }} | Heritage Property{% endblock %}
+{% block content %}<section class="section"><div class="container"><div class="detail-box">
+<div class="d-flex justify-content-between align-items-start flex-wrap gap-3"><div><span class="badge text-bg-light">{{ property.status }}</span><h1 class="fw-bold mt-2">{{ property.title }}</h1><p class="text-muted mb-0">📍 {{ property.city }} · 📐 {{ property.area }} sq.ft</p></div><div class="price fs-3">₹ {{ property.price }}</div></div>
+<hr><p>{{ property.description }}</p>
+<h4 class="fw-bold mt-4">Property Images</h4><div class="row g-3 gallery">{% for image in property.images.all %}<div class="col-md-4"><img src="{{ image.image.url }}" alt="{{ property.title }}"></div>{% empty %}<p class="text-muted">No images available.</p>{% endfor %}</div>
+<div class="mt-4">{% if user == property.agent %}<a class="btn btn-success me-2" href="{% url 'add_property_image' property.pk %}">🖼 Add Image</a>{% endif %}{% if user.is_authenticated %}<a class="btn btn-outline-danger me-2" href="{% url 'add_favorite' property.pk %}">❤️ Favorite</a>{% if user != property.agent %}<a class="btn btn-dark me-2" href="{% url 'inquiry' property.pk %}">📩 Ask Agent</a><a class="btn btn-dark me-2" href="{% url 'visit' property.pk %}">📅 Request Visit</a><a class="btn btn-dark" href="{% url 'review' property.pk %}">⭐ Review</a>{% endif %}{% else %}<a class="btn btn-dark" href="{% url 'login' %}">Login to interact</a>{% endif %}</div>
+<a class="d-block mt-4" href="{% url 'property_list' %}">← Back to Properties</a>
+</div></div></section>{% endblock %}

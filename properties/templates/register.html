@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Create Account | Heritage Property{% endblock %}
+{% block content %}
+<section class="section"><div class="container"><div class="card card-soft form-card p-4 p-md-5 mx-auto">
+<div class="text-center mb-4"><div class="fs-1">🏠</div><h2 class="fw-bold">Create your account</h2><p class="text-muted mb-0">Simple registration. No unnecessary questions.</p></div>
+<form method="post" novalidate>{% csrf_token %}
+{% for field in form %}<div class="mb-3"><label class="form-label fw-semibold">{{ field.label }}</label>{{ field }}{% if field.errors %}<div class="text-danger small mt-1">{{ field.errors|striptags }}</div>{% endif %}{% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}</div>{% endfor %}
+<button class="btn btn-dark w-100 py-2 mt-2">Create Account</button></form>
+<p class="text-center mt-4 mb-0">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+</div></div></section>
+{% endblock %}

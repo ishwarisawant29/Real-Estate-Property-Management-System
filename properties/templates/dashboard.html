@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}My Dashboard | Heritage Property{% endblock %}
+{% block content %}
+<section class="section">
+<div class="container">
+    <div class="dashboard-head mb-4">
+        <div><span class="eyebrow">MY ACCOUNT</span><h1 class="fw-bold mt-2">Hello, {{ user.username }} 👋</h1><p class="text-muted mb-0">Track your questions, saved properties and visit requests in one place.</p></div>
+        <a href="{% url 'property_list' %}" class="btn btn-dark">Browse Properties</a>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-4"><div class="stat-card"><span>❤️</span><div><small>Saved properties</small><h3>{{ favorites_count }}</h3></div></div></div>
+        <div class="col-md-4"><div class="stat-card"><span>📩</span><div><small>My inquiries</small><h3>{{ inquiries|length }}</h3></div></div></div>
+        <div class="col-md-4"><div class="stat-card"><span>📅</span><div><small>Visit requests</small><h3>{{ visits|length }}</h3></div></div></div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="card card-soft p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center"><h4 class="fw-bold mb-0">📩 My Queries</h4><a href="{% url 'property_list' %}" class="small">Ask about a property</a></div>
+                {% for inquiry in inquiries %}
+                <div class="request-card mt-3">
+                    <div class="d-flex justify-content-between gap-3"><div><h6 class="fw-bold mb-1">{{ inquiry.property.title }}</h6><small class="text-muted">{{ inquiry.created_at|date:"d M Y, h:i A" }}</small></div><span class="status-pill status-{{ inquiry.status|lower }}">{{ inquiry.status }}</span></div>
+                    <p class="mb-2 mt-3"><strong>You:</strong> {{ inquiry.message }}</p>
+                    {% if inquiry.reply %}<div class="agent-reply"><strong>Agent reply:</strong><br>{{ inquiry.reply }}</div>{% else %}<p class="text-muted mb-0 small">Waiting for the agent's reply.</p>{% endif %}
+                </div>
+                {% empty %}<div class="empty mt-3">No queries yet. Open a property and send your first inquiry.</div>{% endfor %}
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card card-soft p-4 mb-4">
+                <h4 class="fw-bold">📅 Visit Requests</h4>
+                {% for visit in visits %}<div class="request-card mt-3"><div class="d-flex justify-content-between gap-2"><div><h6 class="fw-bold mb-1">{{ visit.property.title }}</h6><small class="text-muted">Requested for {{ visit.visit_date }}</small></div><span class="status-pill status-{{ visit.status|lower }}">{{ visit.status }}</span></div></div>{% empty %}<p class="text-muted mt-3 mb-0">No visit requests yet.</p>{% endfor %}
+            </div>
+            <div class="card card-soft p-4">
+                <h4 class="fw-bold">🔔 Recent Updates</h4>
+                {% for item in notifications %}<div class="border-bottom py-2"><small>{{ item.message }}</small></div>{% empty %}<p class="text-muted mt-3 mb-0">No new updates.</p>{% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+{% endblock %}

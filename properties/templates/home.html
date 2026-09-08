@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Home | Heritage Property{% endblock %}
+{% block content %}
+<section class="hero">
+<div class="container">
+    <div class="row align-items-center">
+        <div class="col-lg-8">
+            <span class="badge bg-light text-dark mb-3">YOUR NEXT HOME STARTS HERE</span>
+            <h1>Find a place that feels like home.</h1>
+            <p class="my-4">Explore verified properties, save your favourites and connect with property agents.</p>
+            <a class="btn btn-light btn-lg me-2" href="{% url 'property_list' %}">Explore Properties</a>
+            {% if not user.is_authenticated %}<a class="btn btn-outline-light btn-lg" href="{% url 'register' %}">Create Account</a>{% endif %}
+        </div>
+    </div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4"><div><h2 class="fw-bold mb-1">Featured Properties</h2><p class="text-muted mb-0">Fresh listings, because scrolling forever is apparently a lifestyle.</p></div><a href="{% url 'property_list' %}">View all →</a></div>
+    <div class="row g-4">
+    {% for property in properties %}
+        <div class="col-md-6 col-lg-4"><div class="card card-soft property-card p-4">
+            <span class="badge text-bg-light align-self-start mb-3">{{ property.category }}</span>
+            <h5 class="fw-bold">{{ property.title }}</h5><p class="text-muted">{{ property.description|truncatewords:15 }}</p>
+            <div class="price">₹ {{ property.price }}</div><p class="small text-muted mb-3">📍 {{ property.city }} · 📐 {{ property.area }} sq.ft</p>
+            <a class="btn btn-dark w-100" href="{% url 'property_detail' property.pk %}">View Details</a>
+        </div></div>
+    {% empty %}<div class="col-12"><div class="empty">No properties available yet.</div></div>{% endfor %}
+    </div>
+</div>
+</section>
+{% endblock %}
